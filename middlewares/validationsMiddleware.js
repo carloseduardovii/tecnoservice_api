@@ -17,6 +17,14 @@ const createUserValidation = [
     .withMessage('Password must be at least 8 characters long'),
 ];
 
+const createRepairValidations = [
+  body('date').notEmpty().withMessage('Enter a valid date'),
+  body('computerNumber')
+    .notEmpty()
+    .withMessage('Enter a valid computer number'),
+  body('comments').notEmpty().withMessage('Provide valid comments'),
+];
+
 const createCommentValidation = [
   body('text').notEmpty().withMessage('Comment cannot be empty'),
 ];
@@ -38,6 +46,7 @@ const checkValidation = (req, res, next) => {
 
 module.exports = {
   createUserValidation,
+  createRepairValidations,
   createCommentValidation,
   checkValidation,
 };

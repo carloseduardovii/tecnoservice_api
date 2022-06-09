@@ -22,8 +22,16 @@ const getAllUsers = catchAsync(async (req, res, next) => {
   });
 });
 
+const getUserById = catchAsync(async (req, res, next) => {
+  const { user } = req;
+
+  res.status(200).json({
+    user,
+  });
+});
+
 const createUser = catchAsync(async (req, res, next) => {
-  const { name, email, password, role, status } = req.body;
+  const { name, email, password, role } = req.body;
 
   const salt = await bcrypt.genSalt(12);
   const hashPass = await bcrypt.hash(password, salt);
@@ -33,20 +41,11 @@ const createUser = catchAsync(async (req, res, next) => {
     email,
     password: hashPass,
     role,
-    status,
   });
 
   newUser.password = undefined;
 
   res.status(201).json({ newUser });
-});
-
-const getUserById = catchAsync(async (req, res, next) => {
-  const { user } = req;
-
-  res.status(200).json({
-    user,
-  });
 });
 
 const updateUser = catchAsync(async (req, res, next) => {
@@ -55,7 +54,7 @@ const updateUser = catchAsync(async (req, res, next) => {
 
   await user.update({ name, email, password });
 
-  res.status(200).json({ status: 'User was updated' });
+  res.status(200).json({ status: 'User has been updated' });
 });
 
 const deactiveUser = catchAsync(async (req, res) => {

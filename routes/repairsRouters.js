@@ -1,10 +1,11 @@
 const express = require('express');
 
 //middlewares
-const { repairExist } = require('../middlewares/repairsMiddleware');
+const { pendingRepairExist } = require('../middlewares/repairsMiddleware');
 const {
   protectToken,
   protectAdmin,
+  protectCustomer,
   protectAccountOwner,
 } = require('../middlewares/usersMiddleware');
 
@@ -16,19 +17,20 @@ const {
   repairUpdate,
   repairCancelled,
 } = require('../controllers/repairsController');
-const { route } = require('express/lib/router');
 
 const router = express.Router();
 
 router.use(protectToken);
 
-router.route('/pending').get(protectAdmin, getAllRepairs).post(createRepair);
+router.route('/').post(createRepair);
+
+router.route('/pending').get(protectAdmin, getAllRepairs);
 
 router
-  .use('/:id', repairExist)
+  .use('/:id', pendingRepairExist)
   .route('/:id')
-  .get(getRepairById)
-  .patch(protectAccountOwner, repairUpdate)
+  .get(protectAdmin, getRepairById)
+  .patch(protectAdmin, protectAccountOwner, repairUpdate)
   .delete(protectAccountOwner, repairCancelled);
 
 module.exports = { repairsRouter: router };

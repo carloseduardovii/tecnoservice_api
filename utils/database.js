@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 const dotenv = require('dotenv');
 
-//dotenv.config({ path: './set.env' });
+dotenv.config({ path: './set.env' });
 
 // Create a connection to database
 const database = new Sequelize({
@@ -11,15 +11,6 @@ const database = new Sequelize({
   password: process.env.DB_PASS,
   database: process.env.DB,
   logging: false,
-  dialectOptions:
-    process.env.NODE_ENV === 'production'
-      ? {
-          ssl: {
-            require: true,
-            rejectUnauthorized: false,
-          },
-        }
-      : {},
 });
 
 module.exports = { database };

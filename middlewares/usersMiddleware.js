@@ -49,6 +49,16 @@ const protectAdmin = catchAsync(async (req, res, next) => {
   next();
 });
 
+const protectCustomer = catchAsync(async (req, res, next) => {
+  const { sessionUser } = req;
+
+  if (sessionUser.role !== 'customer') {
+    return next(new AppError('Access not granted', 403));
+  }
+
+  next();
+});
+
 const userExist = catchAsync(async (req, res, next) => {
   const { id } = req.params;
 
@@ -79,4 +89,10 @@ const protectAccountOwner = catchAsync(async (req, res, next) => {
   next();
 });
 
-module.exports = { protectToken, protectAdmin, userExist, protectAccountOwner };
+module.exports = {
+  protectToken,
+  protectAdmin,
+  protectCustomer,
+  userExist,
+  protectAccountOwner,
+};
