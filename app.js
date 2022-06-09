@@ -1,5 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const compression = require('compression');
+const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 
 //controllers
@@ -17,6 +20,16 @@ app.use(cors());
 
 // Enable incoming JSON data
 app.use(express.json());
+
+//app security headers
+app.use(helmet());
+
+//compress responses
+app.use(compression());
+
+//Log incomming request
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
+app.use(morgan('combined'));
 
 // Limit IP requests
 const limiter = rateLimit({
