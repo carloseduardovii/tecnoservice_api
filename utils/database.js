@@ -31,7 +31,6 @@ let config = {};
 
 if (process.env.NODE_ENV === 'development') config = credentials.development;
 else config = credentials.production;
-console.log(config);
 
 const database = new Sequelize(config);
 
